@@ -4,7 +4,6 @@ const actionsData = require("../data/helpers/actionModel.js");
 
 const router = express.Router();
 
-
 router.get("/", (req, res) => {
   actionsData
     .get()
@@ -18,7 +17,6 @@ router.get("/", (req, res) => {
       });
     });
 });
-
 
 router.get("/:id", (req, res) => {
   const id = req.params.id;
@@ -42,19 +40,18 @@ router.get("/:id", (req, res) => {
     });
 });
 
-
 router.delete("/:id", (req, res) => {
   const id = req.params.id;
 
   actionsData
     .remove(id)
-    .then(deletedA => {
+    .then(deleted => {
       if (!id) {
         res.status(404).json({
           message: "The action with that ID found"
         });
       } else {
-        res.status(200).json({ deletedA });
+        res.status(200).json({ deleted });
       }
     })
     .catch(err => {
@@ -65,24 +62,23 @@ router.delete("/:id", (req, res) => {
     });
 });
 
-
 router.put("/:id", (req, res) => {
   const id = req.params.id;
   const body = req.body;
 
   actionsData
     .update(id, body)
-    .then(updatedA => {
+    .then(updated => {
       if (!id) {
         res.status(404).json({
           message: "The action with that ID does not exist"
         });
-      } else if (!updatedA.description || !updatedA.notes) {
+      } else if (!updated.description || !updated.notes) {
         res.status(400).json({
           message: "Please provide a correct description and notes "
         });
       } else {
-        res.status(200).json({ updatedA });
+        res.status(200).json({ updated });
       }
     })
     .catch(err => {
@@ -92,7 +88,6 @@ router.put("/:id", (req, res) => {
       });
     });
 });
-
 
 router.post("/:id/actions", checkAction, (req, res) => {
   const body = req.body;
